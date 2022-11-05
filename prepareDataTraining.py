@@ -69,7 +69,7 @@ def take_keypoints_from_video():
 
                     # Make detections
                     image, results = mediapipe_detection(frame, holistic)
-    #                 print(results)
+                    # print(results)
 
                     # Draw landmarks
                     draw_styled_landmarks(image, results)
