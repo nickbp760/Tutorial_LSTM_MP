@@ -90,5 +90,14 @@ def take_keypoints_from_video():
                         # Show to screen
                         cv2.imshow('OpenCV Feed', image)
 
+                    # NEW Export keypoints
+                    keypoints = extract_keypoints(results)
+                    npy_path = os.path.join(DATA_PATH, action, str(sequence), str(frame_num))
+                    np.save(npy_path, keypoints)
+
+                    # Break gracefully
+                    if cv2.waitKey(10) & 0xFF == ord('q'):
+                        break
+
 
 take_keypoints_from_video()
