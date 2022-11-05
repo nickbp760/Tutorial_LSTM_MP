@@ -71,4 +71,4 @@ def camera_play():
         cv2.destroyAllWindows()
 
 
-camera_play()
+# camera_play()
