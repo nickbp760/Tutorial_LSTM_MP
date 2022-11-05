@@ -1,7 +1,5 @@
-# !pip install opencv-python mediapipe
 import cv2
 import mediapipe as mp
-import numpy as np
 
 mp_holistic = mp.solutions.holistic  # Holistic model
 mp_drawing = mp.solutions.drawing_utils  # Drawing utilities
@@ -47,7 +45,7 @@ def draw_styled_landmarks(image, results):
 
 
 # frame_num to count what number of frames it is after we want to record a bunch of frame for LSTM
-def camera_play(frame_num, action=None, sequence=None):
+def camera_play():
     cap = cv2.VideoCapture(0)
     # Set mediapipe model
     with mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence=0.5) as holistic:
@@ -58,57 +56,19 @@ def camera_play(frame_num, action=None, sequence=None):
 
             # Make detections
             image, results = mediapipe_detection(frame, holistic)
-            # print(results)
+            print(results)
 
             # Draw landmarks
             draw_styled_landmarks(image, results)
 
-            # NEW Apply wait logic
-            if frame_num == 0:
-                cv2.putText(image, 'STARTING COLLECTION', (120, 200),
-                            cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 4, cv2.LINE_AA)
-                cv2.putText(image, 'Collecting frames for {} Video Number {}'.format(action, sequence), (15, 12),
-                            cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 1, cv2.LINE_AA)
-                # Show to screen
-                cv2.imshow('OpenCV Feed', image)
-                cv2.waitKey(2000)
-            if frame_num >= 0:
-                cv2.putText(image, 'Collecting frames for {} Video Number {}'.format(action, sequence), (15, 12),
-                            cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 1, cv2.LINE_AA)
-                # Show to screen
-                cv2.imshow('OpenCV Feed', image)
-            else:
-                # Show to screen
-                cv2.imshow('OpenCV Feed', image)
+            # Show to screen
+            cv2.imshow('OpenCV Feed', image)
 
             # Break gracefully
             if cv2.waitKey(10) & 0xFF == ord('q'):
                 break
-
         cap.release()
         cv2.destroyAllWindows()
 
-# camera_play()
 
-
-def extract_keypoints(results):
-    if results.pose_landmarks:
-        pose = np.array([[res.x, res.y, res.z, res.visibility] for res in results.pose_landmarks.landmark]).flatten()
-    else:
-        pose = np.zeros(33*4)
-
-    if results.face_landmarks:
-        face = np.array([[res.x, res.y, res.z] for res in results.face_landmarks.landmark]).flatten()
-    else:
-        face = np.zeros(468*3)
-
-    if results.left_hand_landmarks:
-        lh = np.array([[res.x, res.y, res.z] for res in results.left_hand_landmarks.landmark]).flatten()
-    else:
-        lh = np.zeros(21*3)
-
-    if results.right_hand_landmarks:
-        rh = np.array([[res.x, res.y, res.z] for res in results.right_hand_landmarks.landmark]).flatten()
-    else:
-        rh = np.zeros(21*3)
-    return np.concatenate([pose, face, lh, rh])
+camera_play()
