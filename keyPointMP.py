@@ -1,4 +1,4 @@
-# !pip install tensorflow==2.4.1 tensorflow-gpu==2.4.1 opencv-python mediapipe sklearn matplotlib
+# !pip install opencv-python mediapipe
 import cv2
 import mediapipe as mp
 import numpy as np
@@ -46,7 +46,8 @@ def draw_styled_landmarks(image, results):
                               mp_drawing.DrawingSpec(color=(245, 66, 230), thickness=2, circle_radius=2))
 
 
-def camera_play():
+# frame_num to count what number of frames it is after we want to record a bunch of frame for LSTM
+def camera_play(frame_num, action=None, sequence=None):
     cap = cv2.VideoCapture(0)
     # Set mediapipe model
     with mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence=0.5) as holistic:
@@ -62,12 +63,28 @@ def camera_play():
             # Draw landmarks
             draw_styled_landmarks(image, results)
 
-            # Show to screen
-            cv2.imshow('OpenCV Feed', image)
+            # NEW Apply wait logic
+            if frame_num == 0:
+                cv2.putText(image, 'STARTING COLLECTION', (120, 200),
+                            cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 4, cv2.LINE_AA)
+                cv2.putText(image, 'Collecting frames for {} Video Number {}'.format(action, sequence), (15, 12),
+                            cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 1, cv2.LINE_AA)
+                # Show to screen
+                cv2.imshow('OpenCV Feed', image)
+                cv2.waitKey(2000)
+            if frame_num >= 0:
+                cv2.putText(image, 'Collecting frames for {} Video Number {}'.format(action, sequence), (15, 12),
+                            cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 1, cv2.LINE_AA)
+                # Show to screen
+                cv2.imshow('OpenCV Feed', image)
+            else:
+                # Show to screen
+                cv2.imshow('OpenCV Feed', image)
 
             # Break gracefully
             if cv2.waitKey(10) & 0xFF == ord('q'):
                 break
+
         cap.release()
         cv2.destroyAllWindows()
 
