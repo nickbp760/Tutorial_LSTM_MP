@@ -101,5 +101,3 @@ def take_keypoints_from_video():
 
 
 # take_keypoints_from_video()
-
-
