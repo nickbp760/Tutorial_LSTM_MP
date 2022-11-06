@@ -30,7 +30,7 @@ def model_reload():
     model.add(Dense(32, activation='relu'))
     model.add(Dense(actions.shape[0], activation='softmax'))
 
-    model.load_weights('Weight_model\action.h5')
+    model.load_weights('Weight_model/action.h5')
     return model
 
 
@@ -91,3 +91,6 @@ def real_time_camera_predict():
                 break
         cap.release()
         cv2.destroyAllWindows()
+
+
+# real_time_camera_predict()
