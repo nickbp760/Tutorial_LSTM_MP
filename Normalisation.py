@@ -1,7 +1,7 @@
 import numpy as np
 
 
-def nomralisation_faceLandmark(faceLandMark: list, image):
+def normalisation_faceLandmark(faceLandMark: list, image):
     # the shape is [468, 3]
     heigth, width, dimension = image.shape
     point0 = faceLandMark[9]
@@ -28,4 +28,22 @@ def nomralisation_faceLandmark(faceLandMark: list, image):
     # make length of vy become 1
     vy = vz/np.linalg.norm(vy)
 
-    pass
+    # calculate the matrix
+    lm = np.zeros([4, 4])
+    # print(vx, "vx")
+    # print(vy, "vy")
+    # print(vz, "vz")
+    lm[0:3, 0] = vx
+    lm[0:3, 1] = vy
+    lm[0:3, 2] = vz
+    lm[0:3, 3] = point0
+    lm[3, 3] = 1
+    m = np.linalg.inv(lm)
+
+    # remember the shape is [468, 3], we made to 4 because for matrix multiplication
+    pointDistance = np.ones([468, 4])
+    pointPespective = point0
+    pointDistance[:, 0:3] = pointPespective
+    pointNormalisation = np.matmul(m, pointDistance.transpose()).transpose()
+
+    return pointNormalisation

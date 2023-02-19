@@ -3,7 +3,7 @@ import os
 import cv2
 import mediapipe as mp
 from keyPointMP import mediapipe_detection, draw_styled_landmarks
-from Normalisation import nomralisation_faceLandmark
+from Normalisation import normalisation_faceLandmark
 
 
 mp_holistic = mp.solutions.holistic  # Holistic model
@@ -39,7 +39,7 @@ def extract_keypoints(results, image):
     if results.face_landmarks:
         face = np.array([[res.x, res.y, res.z] for res in results.face_landmarks.landmark])
         # print(face.shape)
-        nomralisation_faceLandmark(face, image)
+        face = normalisation_faceLandmark(face, image)
         face = face.flatten()
         # print(face.shape)
     else:
