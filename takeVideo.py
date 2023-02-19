@@ -2,7 +2,7 @@ import cv2
 import time
 
 
-def take_video():
+def take_video(frameNumLimit: int):
     cap = cv2.VideoCapture(0)
     # We need to check if camera
     # is opened previously or not
@@ -21,7 +21,11 @@ def take_video():
     # is stored in 'filename.avi' file.
     timestr = time.strftime("%Y%m%d-%H%M%S")
     result = cv2.VideoWriter(timestr+"_"+"SavedVideo.avi", cv2.VideoWriter_fourcc(*'MJPG'), 10, size)
-    while cap.isOpened():
+
+    # frameNum for calculation
+    frameNum = 0
+
+    while cap.isOpened() and frameNum <= frameNumLimit:
 
         # Read feed
         ret, frame = cap.read()
@@ -34,6 +38,7 @@ def take_video():
             # Display the frame
             # saved in the file
             cv2.imshow('Frame', frame)
+            frameNum = frameNum + 1
 
             # Press q on keyboard
             # to stop the process
@@ -52,4 +57,7 @@ def take_video():
     cv2.destroyAllWindows()
 
 
-# take_video()
+# 10 fps in default current webcam, please calculate this in this below link
+# if I set the 300 fps limit then it wolud be 30s
+# https://webcamtests.com/fps
+# take_video(300)
