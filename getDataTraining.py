@@ -3,6 +3,8 @@ import os
 import cv2
 import mediapipe as mp
 from keyPointMP import mediapipe_detection, draw_styled_landmarks
+from Normalisation import nomralisation_faceLandmark
+
 
 mp_holistic = mp.solutions.holistic  # Holistic model
 mp_drawing = mp.solutions.drawing_utils  # Drawing utilities
@@ -28,7 +30,7 @@ def create_folder():
                 pass
 
 
-def extract_keypoints(results):
+def extract_keypoints(results, image):
     # if results.pose_landmarks:
     #     pose = np.array([[res.x, res.y, res.z, res.visibility] for res in results.pose_landmarks.landmark]).flatten()
     # else:
@@ -37,6 +39,7 @@ def extract_keypoints(results):
     if results.face_landmarks:
         face = np.array([[res.x, res.y, res.z] for res in results.face_landmarks.landmark])
         # print(face.shape)
+        nomralisation_faceLandmark(face, image)
         face = face.flatten()
         # print(face.shape)
     else:
@@ -94,7 +97,7 @@ def take_keypoints_from_video():
                         cv2.imshow('OpenCV Feed', image)
 
                     # NEW Export keypoints
-                    keypoints = extract_keypoints(results)
+                    keypoints = extract_keypoints(results, image)
                     # print(keypoints.shape)
                     npy_path = os.path.join(DATA_PATH, action, str(sequence), str(frame_num))
                     np.save(npy_path, keypoints)
