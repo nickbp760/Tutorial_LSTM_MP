@@ -1,4 +1,5 @@
 import numpy as np
+from copy import deepcopy
 
 
 def normalisation_faceLandmark(faceLandMark: list, image):
@@ -18,8 +19,8 @@ def normalisation_faceLandmark(faceLandMark: list, image):
 
     point0 = lRes[9]
     # make normal X, Y axis, and make point0 become (0,0) coordinate
-    point1 = point0
-    point2 = point0
+    point1 = deepcopy(point0)
+    point2 = deepcopy(point0)
     point1[0] = point1[0] + 1
     point2[1] = point1[1] + 1
 
