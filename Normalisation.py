@@ -4,7 +4,19 @@ import numpy as np
 def normalisation_faceLandmark(faceLandMark: list, image):
     # the shape is [468, 3]
     heigth, width, dimension = image.shape
-    point0 = faceLandMark[9]
+    # lRes artinya resolution
+    lRes = np.zeros([468, 3])
+    for i in range(468):
+        lRes[i, 0] = faceLandMark[i][0]*heigth
+        lRes[i, 1] = faceLandMark[i][1]*width
+
+        # in this section we just use horizontal image
+        if heigth >= width:
+            lRes[i, 2] = faceLandMark[i][2]*heigth
+        else:
+            lRes[i, 2] = faceLandMark[i][2]*width
+
+    point0 = lRes[9]
     # make normal X, Y axis, and make point0 become (0,0) coordinate
     point1 = point0
     point2 = point0
