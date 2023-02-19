@@ -39,7 +39,7 @@ def normalisation_faceLandmark(faceLandMark: list, image):
     # get vector y
     vy = np.cross(vz, vx)
     # make length of vy become 1
-    vy = vz/np.linalg.norm(vy)
+    vy = vy/np.linalg.norm(vy)
 
     # calculate the matrix
     lm = np.zeros([4, 4])
