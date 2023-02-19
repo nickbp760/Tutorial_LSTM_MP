@@ -35,11 +35,13 @@ def extract_keypoints(results):
     #     pose = np.zeros(33*4)
 
     if results.face_landmarks:
-        face = np.array([[res.x, res.y, res.z] for res in results.face_landmarks.landmark]).flatten()
+        face = np.array([[res.x, res.y, res.z] for res in results.face_landmarks.landmark])
+        # print(face.shape)
+        face = face.flatten()
+        # print(face.shape)
     else:
         face = np.zeros(468*3)
 
-    print(face.shape)
     # if results.left_hand_landmarks:
     #     lh = np.array([[res.x, res.y, res.z] for res in results.left_hand_landmarks.landmark]).flatten()
     # else:
