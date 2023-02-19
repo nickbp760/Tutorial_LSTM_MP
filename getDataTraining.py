@@ -29,26 +29,28 @@ def create_folder():
 
 
 def extract_keypoints(results):
-    if results.pose_landmarks:
-        pose = np.array([[res.x, res.y, res.z, res.visibility] for res in results.pose_landmarks.landmark]).flatten()
-    else:
-        pose = np.zeros(33*4)
+    # if results.pose_landmarks:
+    #     pose = np.array([[res.x, res.y, res.z, res.visibility] for res in results.pose_landmarks.landmark]).flatten()
+    # else:
+    #     pose = np.zeros(33*4)
 
     if results.face_landmarks:
         face = np.array([[res.x, res.y, res.z] for res in results.face_landmarks.landmark]).flatten()
     else:
         face = np.zeros(468*3)
 
-    if results.left_hand_landmarks:
-        lh = np.array([[res.x, res.y, res.z] for res in results.left_hand_landmarks.landmark]).flatten()
-    else:
-        lh = np.zeros(21*3)
+    print(face.shape)
+    # if results.left_hand_landmarks:
+    #     lh = np.array([[res.x, res.y, res.z] for res in results.left_hand_landmarks.landmark]).flatten()
+    # else:
+    #     lh = np.zeros(21*3)
 
-    if results.right_hand_landmarks:
-        rh = np.array([[res.x, res.y, res.z] for res in results.right_hand_landmarks.landmark]).flatten()
-    else:
-        rh = np.zeros(21*3)
-    return np.concatenate([pose, face, lh, rh])
+    # if results.right_hand_landmarks:
+    #     rh = np.array([[res.x, res.y, res.z] for res in results.right_hand_landmarks.landmark]).flatten()
+    # else:
+    #     rh = np.zeros(21*3)
+    # return np.concatenate([pose, face, lh, rh])
+    return np.concatenate([face])
 
 
 def take_keypoints_from_video():
@@ -69,7 +71,6 @@ def take_keypoints_from_video():
 
                     # Make detections
                     image, results = mediapipe_detection(frame, holistic)
-                    # print(results)
 
                     # Draw landmarks
                     draw_styled_landmarks(image, results)
@@ -92,6 +93,7 @@ def take_keypoints_from_video():
 
                     # NEW Export keypoints
                     keypoints = extract_keypoints(results)
+                    # print(keypoints.shape)
                     npy_path = os.path.join(DATA_PATH, action, str(sequence), str(frame_num))
                     np.save(npy_path, keypoints)
 
