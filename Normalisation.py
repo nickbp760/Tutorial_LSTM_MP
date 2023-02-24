@@ -17,6 +17,9 @@ def normalisation_faceLandmark(faceLandMark: list, image):
         else:
             lRes[i, 2] = faceLandMark[i][2]*width
 
+    # for lres in lRes:
+    #     print(lres)
+
     point0 = lRes[9]
     # make normal X, Y axis, and make point0 become (0,0) coordinate
     point1 = deepcopy(point0)
@@ -58,5 +61,8 @@ def normalisation_faceLandmark(faceLandMark: list, image):
     pointPespective = point0
     pointDistance[:, 0:3] = pointPespective
     pointNormalisation = np.matmul(m, pointDistance.transpose()).transpose()
+
+    # for point in pointNormalisation:
+    #     print(point)
 
     return pointNormalisation

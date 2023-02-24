@@ -3,7 +3,7 @@ import os
 import cv2
 import mediapipe as mp
 from keyPointMP import mediapipe_detection, draw_styled_landmarks_face
-# from Normalisation import normalisation_faceLandmark
+from Normalisation import normalisation_faceLandmark
 
 
 mp_holistic = mp.solutions.holistic  # Holistic model
@@ -34,7 +34,7 @@ def extract_keypoints_face(results, image):
     if results.face_landmarks:
         face = np.array([[res.x, res.y, res.z] for res in results.face_landmarks.landmark])
         # print(face.shape)
-        # face = normalisation_faceLandmark(face, image)
+        face = normalisation_faceLandmark(face, image)
         face = face.flatten()
         # print(face.shape)
     else:
@@ -128,9 +128,8 @@ def load_image_face_detection():
 
         # Draw landmarks
         draw_styled_landmarks_face(image, results)
-        keypoints = extract_keypoints_face(results, image)
-        for key in keypoints:
-            print(key)
+        extract_keypoints_face(results, image)
+
         # Show to screen
         cv2.imshow('OpenCV Feed', image)
         # To hold the window on screen, we use cv2.waitKey method
