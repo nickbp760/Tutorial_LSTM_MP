@@ -2,7 +2,7 @@ import numpy as np
 import cv2
 import mediapipe as mp
 from keyPointMP import mediapipe_detection, draw_styled_landmarks
-from getDataTraining import extract_keypoints, actions
+from getDataTraining import extract_keypoints_all, actions
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import LSTM, Dense
 
@@ -30,7 +30,7 @@ def model_reload():
     model.add(Dense(32, activation='relu'))
     model.add(Dense(actions.shape[0], activation='softmax'))
 
-    model.load_weights('Weight_model/action.h5')
+    model.load_weights('Weight_model/actionYoutube.h5')
     return model
 
 
@@ -38,6 +38,7 @@ def real_time_camera_predict():
     # 1. New detection variables
     sequence = []
     sentence = []
+    predictions = []
     threshold = 0.8
 
     cap = cv2.VideoCapture(0)
@@ -55,8 +56,8 @@ def real_time_camera_predict():
             # Draw landmarks
             draw_styled_landmarks(image, results)
             # 2. Prediction logic
-            keypoints = extract_keypoints(results)
-        #         sequence.insert(0,keypoints)
+            keypoints = extract_keypoints_all(results, image)
+        #         sequence.insert(0,keypoints, image)
         #         sequence = sequence[:30]
             sequence.append(keypoints)
             sequence = sequence[-30:]
@@ -64,14 +65,16 @@ def real_time_camera_predict():
             if len(sequence) == 30:
                 res = model.predict(np.expand_dims(sequence, axis=0))[0]
                 print(actions[np.argmax(res)])
+                predictions.append(np.argmax(res))
 
             # 3. Viz logic
-                if res[np.argmax(res)] > threshold:
-                    if len(sentence) > 0:
-                        if actions[np.argmax(res)] != sentence[-1]:
+                if np.unique(predictions[-10:])[0] == np.argmax(res):
+                    if res[np.argmax(res)] > threshold:
+                        if len(sentence) > 0:
+                            if actions[np.argmax(res)] != sentence[-1]:
+                                sentence.append(actions[np.argmax(res)])
+                        else:
                             sentence.append(actions[np.argmax(res)])
-                    else:
-                        sentence.append(actions[np.argmax(res)])
 
                 if len(sentence) > 5:
                     sentence = sentence[-5:]

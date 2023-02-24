@@ -58,6 +58,30 @@ def extract_keypoints(results, image):
     return np.concatenate([face])
 
 
+def extract_keypoints_all(results, image):
+    if results.pose_landmarks:
+        pose = np.array([[res.x, res.y, res.z, res.visibility] for res in results.pose_landmarks.landmark]).flatten()
+    else:
+        pose = np.zeros(33*4)
+
+    if results.face_landmarks:
+        face = np.array([[res.x, res.y, res.z] for res in results.face_landmarks.landmark])
+        face = face.flatten()
+    else:
+        face = np.zeros(468*3)
+
+    if results.left_hand_landmarks:
+        lh = np.array([[res.x, res.y, res.z] for res in results.left_hand_landmarks.landmark]).flatten()
+    else:
+        lh = np.zeros(21*3)
+
+    if results.right_hand_landmarks:
+        rh = np.array([[res.x, res.y, res.z] for res in results.right_hand_landmarks.landmark]).flatten()
+    else:
+        rh = np.zeros(21*3)
+    return np.concatenate([pose, face, lh, rh])
+
+
 def take_keypoints_from_video():
     cap = cv2.VideoCapture(0)
     # Set mediapipe model
