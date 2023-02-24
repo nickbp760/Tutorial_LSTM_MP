@@ -1,5 +1,7 @@
 import numpy as np
 from copy import deepcopy
+# Import math Library
+import math
 
 
 def normalisation_faceLandmark(faceLandMark: list, image):
@@ -17,16 +19,21 @@ def normalisation_faceLandmark(faceLandMark: list, image):
         else:
             lRes[i, 2] = faceLandMark[i][2]*width
 
-    # other references
+    # other reference
     # point0 = lRes[151]
     # point1 = lRes[337]
     # point2 = lRes[10]
+
+    # !!! use this reference
     # make normal X, Y axis, and make point0 become (0,0) coordinate
+    distance = math.dist(lRes[151], lRes[9])
+    # distance = 1
     point0 = lRes[9]
     point1 = deepcopy(point0)
     point2 = deepcopy(point0)
-    point1[0] = point1[0] + 1
-    point2[1] = point1[1] + 1
+    # Not Change the axis
+    point1[0] = point1[0] + distance
+    point2[1] = point1[1] + distance
 
     # calculate the vector
     vx = point1 - point0
@@ -72,7 +79,20 @@ def normalisation_faceLandmark(faceLandMark: list, image):
     pointNormalisation = np.matmul(m, pointDistance.transpose()).transpose()
 
     # print("pointNormalisation")
-    # for point in pointNormalisation:
-    #     print(point)
+    for point in pointNormalisation:
+        # ?? we want to make the coordinate axis bescome like we ussually know
+        # ?? because in computer the Y axis is different, the Y become more positive when we down so we need to * -1
+        # ?? for other axis, X is same, and Z is pretty same with note the 0,0 point is behind us when we facing webcam
+        # ?? Z axis become more positif if toward us, and become more negative if moving toward the webcam
+        point[1] = point[1] * -1
+        # print(point)
+
+    # example point of face (9, 151)
+    # Before Normalisation
+    # print("9", lRes[9])
+    # print("151", lRes[151])
+    # After Normalisation
+    # print("P9", pointNormalisation[9])
+    # print("P151", pointNormalisation[151])
 
     return pointNormalisation
