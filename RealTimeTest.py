@@ -96,4 +96,4 @@ def real_time_camera_predict():
         cv2.destroyAllWindows()
 
 
-real_time_camera_predict()
+# real_time_camera_predict()
