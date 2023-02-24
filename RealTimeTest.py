@@ -52,7 +52,7 @@ def real_time_camera_predict():
 
             # Make detections
             image, results = mediapipe_detection(frame, holistic)
-            print(results)
+            # print(results)
             # Draw landmarks
             draw_styled_landmarks_all(image, results)
             # 2. Prediction logic
@@ -64,7 +64,7 @@ def real_time_camera_predict():
 
             if len(sequence) == 30:
                 res = model.predict(np.expand_dims(sequence, axis=0))[0]
-                print(actions[np.argmax(res)])
+                # print(actions[np.argmax(res)])
                 predictions.append(np.argmax(res))
 
             # 3. Viz logic
