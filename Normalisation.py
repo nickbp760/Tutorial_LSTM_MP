@@ -17,11 +17,12 @@ def normalisation_faceLandmark(faceLandMark: list, image):
         else:
             lRes[i, 2] = faceLandMark[i][2]*width
 
-    # for lres in lRes:
-    #     print(lres)
-
-    point0 = lRes[9]
+    # other references
+    # point0 = lRes[151]
+    # point1 = lRes[337]
+    # point2 = lRes[10]
     # make normal X, Y axis, and make point0 become (0,0) coordinate
+    point0 = lRes[9]
     point1 = deepcopy(point0)
     point2 = deepcopy(point0)
     point1[0] = point1[0] + 1
@@ -44,6 +45,7 @@ def normalisation_faceLandmark(faceLandMark: list, image):
     # make length of vy become 1
     vy = vy/np.linalg.norm(vy)
 
+    # print(vx, vy, vz, vd)
     # calculate the matrix
     lm = np.zeros([4, 4])
     # print(vx, "vx")
@@ -54,14 +56,22 @@ def normalisation_faceLandmark(faceLandMark: list, image):
     lm[0:3, 2] = vz
     lm[0:3, 3] = point0
     lm[3, 3] = 1
+    # print("lm", lm)
     m = np.linalg.inv(lm)
+    # print("m", m)
+    # print("point0", point0)
+
+    # print("LRES")
+    # for lres in lRes:
+    #     print(lres)
 
     # remember the shape is [468, 3], we made to 4 because for matrix multiplication
     pointDistance = np.ones([468, 4])
-    pointPespective = point0
-    pointDistance[:, 0:3] = pointPespective
+    previousPoint = lRes  # (Before Normalisation)
+    pointDistance[:, 0:3] = previousPoint
     pointNormalisation = np.matmul(m, pointDistance.transpose()).transpose()
 
+    # print("pointNormalisation")
     # for point in pointNormalisation:
     #     print(point)
 
