@@ -79,30 +79,3 @@ def camera_play():
 
 
 # camera_play()
-
-
-def load_image_face_detection():
-    image = cv2.imread("20230224-100951_SavedPicture.png")
-    # Set mediapipe model
-    with mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence=0.5) as holistic:
-        # Make detections
-        image, results = mediapipe_detection(image, holistic)
-        # print(results)
-
-        # Draw landmarks
-        draw_styled_landmarks_face(image, results)
-
-        # Show to screen
-        cv2.imshow('OpenCV Feed', image)
-        # To hold the window on screen, we use cv2.waitKey method
-        # Once it detected the close input, it will release the control
-        # To the next line
-        # First Parameter is for holding screen for specified milliseconds
-        # It should be positive integer. If 0 pass an parameter, then it will
-        # hold the screen until user close it.
-        cv2.waitKey(0)
-        # It is for removing/deleting created GUI window from screen
-        # and memory
-        cv2.destroyAllWindows()
-
-# load_image_face_detection()
