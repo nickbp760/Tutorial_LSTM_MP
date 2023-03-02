@@ -9,10 +9,10 @@ from Normalisation import normalisation_faceLandmark
 mp_holistic = mp.solutions.holistic  # Holistic model
 mp_drawing = mp.solutions.drawing_utils  # Drawing utilities
 # Path for exported data, numpy arrays
-DATA_PATH = os.path.join('MP_Data')
+DATA_PATH = os.path.join('Face_Data')
 
 # Actions that we try to detect
-actions = np.array(['hello', 'thanks', 'iloveyou'])
+actions = np.array(['HadapKanan', 'HadapKiri', 'HadapDepan'])
 
 # Thirty videos worth of data
 no_sequences = 30
@@ -30,6 +30,9 @@ def create_folder():
                 pass
 
 
+# create_folder()
+
+
 def extract_keypoints_face(results, image):
     if results.face_landmarks:
         face = np.array([[res.x, res.y, res.z] for res in results.face_landmarks.landmark])
@@ -42,31 +45,7 @@ def extract_keypoints_face(results, image):
     return np.concatenate([face])
 
 
-def extract_keypoints_all(results, image):
-    if results.pose_landmarks:
-        pose = np.array([[res.x, res.y, res.z, res.visibility] for res in results.pose_landmarks.landmark]).flatten()
-    else:
-        pose = np.zeros(33*4)
-
-    if results.face_landmarks:
-        face = np.array([[res.x, res.y, res.z] for res in results.face_landmarks.landmark])
-        face = face.flatten()
-    else:
-        face = np.zeros(468*3)
-
-    if results.left_hand_landmarks:
-        lh = np.array([[res.x, res.y, res.z] for res in results.left_hand_landmarks.landmark]).flatten()
-    else:
-        lh = np.zeros(21*3)
-
-    if results.right_hand_landmarks:
-        rh = np.array([[res.x, res.y, res.z] for res in results.right_hand_landmarks.landmark]).flatten()
-    else:
-        rh = np.zeros(21*3)
-    return np.concatenate([pose, face, lh, rh])
-
-
-def take_keypoints_from_video():
+def take_keypoints_face_from_video():
     cap = cv2.VideoCapture(0)
     # Set mediapipe model
     with mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence=0.5) as holistic:
@@ -115,7 +94,7 @@ def take_keypoints_from_video():
                         break
 
 
-# take_keypoints_from_video()
+# take_keypoints_face_from_video()
 
 
 def load_image_face_detection():
