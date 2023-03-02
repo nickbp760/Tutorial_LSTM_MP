@@ -1,7 +1,7 @@
 import numpy as np
 import cv2
 import mediapipe as mp
-from keyPointMP import mediapipe_detection, draw_styled_landmarks_all
+from keyPointMP import mediapipe_detection, draw_styled_landmarks_face
 from Face_Distraction.getDataTraining_Face import extract_keypoints_face, actions
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import LSTM, Dense
@@ -54,7 +54,7 @@ def real_time_camera_predict():
             image, results = mediapipe_detection(frame, holistic)
             # print(results)
             # Draw landmarks
-            draw_styled_landmarks_all(image, results)
+            draw_styled_landmarks_face(image, results)
             # 2. Prediction logic
             keypoints = extract_keypoints_face(results, image)
         #         sequence.insert(0,keypoints, image)
