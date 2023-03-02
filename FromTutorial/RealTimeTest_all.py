@@ -2,7 +2,7 @@ import numpy as np
 import cv2
 import mediapipe as mp
 from keyPointMP import mediapipe_detection, draw_styled_landmarks_all
-from getDataTraining_All import extract_keypoints_all, actions
+from FromTutorial.getDataTraining_All import extract_keypoints_all, actions
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import LSTM, Dense
 
