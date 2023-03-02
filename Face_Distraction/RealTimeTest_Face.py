@@ -2,7 +2,7 @@ import numpy as np
 import cv2
 import mediapipe as mp
 from keyPointMP import mediapipe_detection, draw_styled_landmarks_all
-from getDataTraining_All import extract_keypoints_all, actions
+from getDataTraining_Face import extract_keypoints_face, actions
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import LSTM, Dense
 
@@ -23,14 +23,14 @@ def prob_viz(res, actions, input_frame, colors):
 
 def model_reload():
     model = Sequential()
-    model.add(LSTM(64, return_sequences=True, activation='relu', input_shape=(30, 1662)))
+    model.add(LSTM(64, return_sequences=True, activation='relu', input_shape=(30, 1404)))
     model.add(LSTM(128, return_sequences=True, activation='relu'))
     model.add(LSTM(64, return_sequences=False, activation='relu'))
     model.add(Dense(64, activation='relu'))
     model.add(Dense(32, activation='relu'))
     model.add(Dense(actions.shape[0], activation='softmax'))
 
-    model.load_weights('Weight_model/actionYoutube.h5')
+    model.load_weights('Weight_model/actionFace.h5')
     return model
 
 
@@ -56,7 +56,7 @@ def real_time_camera_predict():
             # Draw landmarks
             draw_styled_landmarks_all(image, results)
             # 2. Prediction logic
-            keypoints = extract_keypoints_all(results, image)
+            keypoints = extract_keypoints_face(results, image)
         #         sequence.insert(0,keypoints, image)
         #         sequence = sequence[:30]
             sequence.append(keypoints)
