@@ -94,7 +94,7 @@ def take_keypoints_face_from_video():
                         break
 
 
-# take_keypoints_face_from_video()
+take_keypoints_face_from_video()
 
 
 def load_image_face_detection():
