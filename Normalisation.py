@@ -78,6 +78,8 @@ def normalisation_faceLandmark(faceLandMark: list, image):
     pointDistance[:, 0:3] = previousPoint
     pointNormalisation = np.matmul(m, pointDistance.transpose()).transpose()
 
+    pointResult = np.zeros(shape=(468, 3))
+    numberCount = 0
     # print("pointNormalisation")
     for point in pointNormalisation:
         # ?? we want to make the coordinate axis bescome like we ussually know
@@ -85,7 +87,8 @@ def normalisation_faceLandmark(faceLandMark: list, image):
         # ?? for other axis, X is same, and Z is pretty same with note the 0,0 point is behind us when we facing webcam
         # ?? Z axis become more positif if toward us, and become more negative if moving toward the webcam
         point[1] = point[1] * -1
-        # print(point)
+        pointResult[numberCount] = point[:3]
+        numberCount = numberCount + 1
 
     # example point of face (9, 151)
     # Before Normalisation
@@ -95,4 +98,4 @@ def normalisation_faceLandmark(faceLandMark: list, image):
     # print("P9", pointNormalisation[9])
     # print("P151", pointNormalisation[151])
 
-    return pointNormalisation
+    return pointResult
