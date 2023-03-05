@@ -34,23 +34,25 @@ def normalisation_faceLandmark(faceLandMark: list, image):
     # Not Change the axis
     point1[0] = point1[0] + distance
     point2[1] = point1[1] + distance
+    # ?? normal means the axis still same, and the rotation factor will not use
 
     # calculate the vector
     vx = point1 - point0
     vd = point2 - point1
     # make length of vx,vd become 1
-    vx = vx/np.linalg.norm(vx)
-    vd = vd/np.linalg.norm(vd)
+    # vx = vx/np.linalg.norm(vx)
+    # vd = vd/np.linalg.norm(vd)
 
     # get vector z
     vz = np.cross(vx, vd)
     # make length of vz become 1
-    vz = vz/np.linalg.norm(vz)
+    # vz = vz/np.linalg.norm(vz)
 
     # get vector y
     vy = np.cross(vz, vx)
     # make length of vy become 1
-    vy = vy/np.linalg.norm(vy)
+    # vy = vy/np.linalg.norm(vy)
+    # ?? if length become 1 then the scale factor is gone
 
     # print(vx, vy, vz, vd)
     # calculate the matrix
@@ -67,6 +69,7 @@ def normalisation_faceLandmark(faceLandMark: list, image):
     m = np.linalg.inv(lm)
     # print("m", m)
     # print("point0", point0)
+    # ?? the 4th data of every row matrix is translation factor
 
     # print("LRES")
     # for lres in lRes:
