@@ -10,4 +10,4 @@ def magnitude(vector):
 
 
 # computing and displaying the magnitude of the vector
-print('Magnitude of the Vector:', magnitude(numpy.array([6.23336792, 137.70465851, -15.38446069])))
+print('Magnitude of the Vector:', magnitude(numpy.array([-0.05547804, 0.97292819, 0.22435001])))
