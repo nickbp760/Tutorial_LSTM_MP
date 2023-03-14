@@ -2,8 +2,46 @@ import os
 import cv2
 import mediapipe as mp
 import numpy as np
-from keyPointMP import mediapipe_detection, draw_styled_landmarks_face
-from getDataTraining_Face import extract_keypoints_face
+from keyPointMP import mediapipe_detection
+from Face_Distraction.getDataTraining_Face import extract_keypoints_face
+
+
+mp_holistic = mp.solutions.holistic  # Holistic model
+mp_drawing = mp.solutions.drawing_utils  # Drawing utilities
+
+
+def take_keypoints_Completeface_from_video(DATA_PATH: str, action: str, sequnce: int, videoFilePath: str = None):
+    # create a VideoCapture object to read the video file
+    cap = cv2.VideoCapture(videoFilePath)
+
+    # check if the video file was opened successfully
+    if not cap.isOpened():
+        print("Error: Could not open video file")
+        exit()
+
+    frame_num = 0
+    # Set mediapipe model
+    while cap.isOpened():
+        with mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence=0.5) as holistic:
+            # Read feed
+            ret, frame = cap.read()
+            if ret:
+                # Make detections
+                image, results = mediapipe_detection(frame, holistic)
+
+                # NEW Export keypoints
+                keypoints = extract_keypoints_face(results, image)
+                # print(keypoints.shape)
+                npy_path = os.path.join(DATA_PATH, action, str(sequence), str(frame_num))
+                np.save(npy_path, keypoints)
+                frame_num += 1
+            else:
+                break
+
+    # Release the video file and close the window
+    cap.release()
+    cv2.destroyAllWindows()
+
 
 # specify the directory path
 path = "./FaceVideoDataset"
@@ -26,42 +64,6 @@ for item in filesAndFolders:
         for videoFileName in VideoList:
             print("             ", videoFileName)
             fullPathVideoFileName = os.path.join(fullPathVideoList, videoFileName)  # get the full path of the item
+            os.makedirs(os.path.join(DATA_PATH, item, str(sequence)))
+            take_keypoints_Completeface_from_video(DATA_PATH, item, sequence, fullPathVideoFileName)
             sequence += 1
-
-
-mp_holistic = mp.solutions.holistic  # Holistic model
-mp_drawing = mp.solutions.drawing_utils  # Drawing utilities
-
-
-def take_keypoints_Completeface_from_video(DATA_PATH: str, action: str, sequnce: int, videoFilePath: str = None):
-    # create a VideoCapture object to read the video file
-    cap = cv2.VideoCapture(videoFilePath)
-
-    # check if the video file was opened successfully
-    if not cap.isOpened():
-        print("Error: Could not open video file")
-        exit()
-
-    frame_num = 0
-    # Set mediapipe model
-    with mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence=0.5) as holistic:
-        # Read feed
-        ret, frame = cap.read()
-
-        # Make detections
-        image, results = mediapipe_detection(frame, holistic)
-
-        # Draw landmarks
-        draw_styled_landmarks_face(image, results)
-
-        cv2.putText(image, 'Collecting frames for {} Video Number {}'.format(action, sequence),
-                    (15, 12), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 1, cv2.LINE_AA)
-        # Show to screen
-        cv2.imshow('OpenCV Feed', image)
-
-        # NEW Export keypoints
-        keypoints = extract_keypoints_face(results, image)
-        # print(keypoints.shape)
-        npy_path = os.path.join(DATA_PATH, action, str(sequence), str(frame_num))
-        np.save(npy_path, keypoints)
-        frame_num += 1
