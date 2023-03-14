@@ -45,8 +45,18 @@ def extract_keypoints_face(results, image):
     return np.concatenate([face])
 
 
-def take_keypoints_face_from_video():
-    cap = cv2.VideoCapture(0)
+def take_keypoints_face_from_video(DATA_PATH: str, videoFilePath: str = None):
+    if videoFilePath is None:
+        cap = cv2.VideoCapture(0)
+    else:
+        # create a VideoCapture object to read the video file
+        cap = cv2.VideoCapture(videoFilePath)
+
+    # check if the video file was opened successfully
+    if not cap.isOpened():
+        print("Error: Could not open video file")
+        exit()
+
     # Set mediapipe model
     with mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence=0.5) as holistic:
 
@@ -94,7 +104,7 @@ def take_keypoints_face_from_video():
                         break
 
 
-# take_keypoints_face_from_video()
+take_keypoints_face_from_video(DATA_PATH)
 
 
 def load_image_face_detection():
