@@ -26,7 +26,7 @@ def take_video(frameNumLimit: int):
     frameNum = 0
 
     while cap.isOpened() and frameNum <= frameNumLimit:
-
+        print("start")
         # Read feed
         ret, frame = cap.read()
 
@@ -51,7 +51,7 @@ def take_video(frameNumLimit: int):
 
     # When everything done, release
     # the video capture and video
-    # write objects
+    # write objectsq
     cap.release()
     result.release()
     cv2.destroyAllWindows()
@@ -60,4 +60,4 @@ def take_video(frameNumLimit: int):
 # 10 fps in default current webcam, please calculate this in this below link
 # if I set the 300 fps limit then it wolud be 30s
 # https://webcamtests.com/fps
-# take_video(300)
+# take_video(30)
