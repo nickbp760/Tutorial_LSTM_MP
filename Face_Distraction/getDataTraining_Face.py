@@ -104,7 +104,7 @@ def take_keypoints_face_from_video(DATA_PATH: str, videoFilePath: str = None):
                         break
 
 
-take_keypoints_face_from_video(DATA_PATH)
+# take_keypoints_face_from_video(DATA_PATH)
 
 
 def load_image_face_detection():
