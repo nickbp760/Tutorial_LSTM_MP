@@ -24,20 +24,29 @@ def take_video(frameNumLimit: int):
 
     # frameNum for calculation
     frameNum = 0
+    # masukFrame = 1
 
     while cap.isOpened() and frameNum <= frameNumLimit:
-        print("start")
         # Read feed
         ret, frame = cap.read()
 
         if ret:
-            # Write the frame into the
-            # file 'filename.avi'
-            result.write(frame)
-
-            # Display the frame
-            # saved in the file
-            cv2.imshow('Frame', frame)
+            # NEW Apply wait logic
+            if frameNum == 0:
+                cv2.putText(frame, 'STARTING COLLECTION', (120, 200),
+                            cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 4, cv2.LINE_AA)
+                # Show to screen
+                cv2.imshow('OpenCV Feed', frame)
+                cv2.waitKey(2000)
+            else:
+                # print(masukFrame, frameNum)
+                # masukFrame += 1
+                # Write the frame into the
+                # file 'filename.avi'
+                result.write(frame)
+                # Display the frame
+                # saved in the file
+                cv2.imshow('OpenCV Feed', frame)
             frameNum = frameNum + 1
 
             # Press q on keyboard
@@ -60,4 +69,4 @@ def take_video(frameNumLimit: int):
 # 10 fps in default current webcam, please calculate this in this below link
 # if I set the 300 fps limit then it wolud be 30s
 # https://webcamtests.com/fps
-# take_video(30)
+take_video(50)
