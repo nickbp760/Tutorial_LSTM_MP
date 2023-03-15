@@ -12,6 +12,7 @@ mp_drawing = mp.solutions.drawing_utils  # Drawing utilities
 colors = [(245, 17, 16), (117, 245, 16), (16, 117, 245)]
 
 
+# !!! Nomrlisation cuma 486 !!!!!
 def prob_viz(res, actions, input_frame, colors):
     output_frame = input_frame.copy()
     for num, prob in enumerate(res):
