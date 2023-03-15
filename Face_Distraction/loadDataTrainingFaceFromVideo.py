@@ -9,6 +9,7 @@ from Face_Distraction.getDataTraining_Face import extract_keypoints_face
 
 mp_holistic = mp.solutions.holistic  # Holistic model
 mp_drawing = mp.solutions.drawing_utils  # Drawing utilities
+mp_face_mesh = mp.solutions.face_mesh
 
 
 def take_keypoints_Completeface_from_video(DATA_PATH: str, action: str, sequnce: int, videoFilePath: str = None):
@@ -23,12 +24,17 @@ def take_keypoints_Completeface_from_video(DATA_PATH: str, action: str, sequnce:
     frame_num = 0
     # Set mediapipe model
     while cap.isOpened():
-        with mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence=0.5) as holistic:
+        with mp_face_mesh.FaceMesh(
+            max_num_faces=1,
+            refine_landmarks=True,
+            min_detection_confidence=0.5,
+            min_tracking_confidence=0.5
+        ) as face_mesh:
             # Read feed
             ret, frame = cap.read()
             if ret:
                 # Make detections
-                image, results = mediapipe_detection(frame, holistic)
+                image, results = mediapipe_detection(frame, face_mesh)
                 # # Draw landmarks
                 # draw_styled_landmarks_face(image, results)
 

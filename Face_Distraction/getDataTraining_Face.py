@@ -34,14 +34,14 @@ def create_folder():
 
 
 def extract_keypoints_face(results, image):
-    if results.face_landmarks:
-        face = np.array([[res.x, res.y, res.z] for res in results.face_landmarks.landmark])
+    if results.multi_face_landmarks:
+        face = np.array([[res.x, res.y, res.z] for res in results.multi_face_landmarks[0].landmark])
         # print(face.shape)
         face = normalisation_faceLandmark(face, image)
         face = face.flatten()
         # print(face.shape)
     else:
-        face = np.zeros(468*3)
+        face = np.zeros(478*3)
     return np.concatenate([face])
 
 
