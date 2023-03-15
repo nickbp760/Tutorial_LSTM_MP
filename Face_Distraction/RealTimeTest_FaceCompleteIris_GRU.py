@@ -1,13 +1,15 @@
 import numpy as np
 import cv2
 import mediapipe as mp
-from keyPointMP import mediapipe_detection, draw_styled_landmarks_face
+from keyPointMP import mediapipe_detection
+# from keyPointMP import draw_styled_landmarks_face
 from Face_Distraction.getDataTraining_Face import extract_keypoints_face
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import GRU, Dense
 
 mp_holistic = mp.solutions.holistic  # Holistic model
 mp_drawing = mp.solutions.drawing_utils  # Drawing utilities
+mp_face_mesh = mp.solutions.face_mesh
 
 colors = [(245, 17, 16), (117, 245, 16), (16, 117, 245), (100, 50, 16), (15, 17, 16), (245, 200, 200)]
 actions = np.array(['LirikKanan', 'LirikKiri', 'MenolehKanan', 'MenolehKiri', 'Normal', 'TutupMata'])
@@ -24,14 +26,14 @@ def prob_viz(res, actions, input_frame, colors):
 
 def model_reload():
     model = Sequential()
-    model.add(GRU(128, return_sequences=True, activation='relu', input_shape=(50, 1404)))
+    model.add(GRU(128, return_sequences=True, activation='relu', input_shape=(50, 1434)))
     model.add(GRU(64, return_sequences=True, activation='relu'))
     model.add(GRU(128, return_sequences=False, activation='relu'))
     model.add(Dense(128, activation='relu'))
     model.add(Dense(32, activation='relu'))
     model.add(Dense(actions.shape[0], activation='softmax'))
 
-    model.load_weights('Weight_model/actionGRUFaceComplete2.h5')
+    model.load_weights('Weight_model/actionGRUFaceCompleteIris.h5')
     return model
 
 
@@ -45,17 +47,22 @@ def real_time_camera_predict():
     cap = cv2.VideoCapture(0)
     # Set mediapipe model
     model = model_reload()
-    with mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence=0.5) as holistic:
+    with mp_face_mesh.FaceMesh(
+            max_num_faces=1,
+            refine_landmarks=True,
+            min_detection_confidence=0.5,
+            min_tracking_confidence=0.5
+    ) as face_mesh:
         while cap.isOpened():
 
             # Read feed
             ret, frame = cap.read()
 
             # Make detections
-            image, results = mediapipe_detection(frame, holistic)
+            image, results = mediapipe_detection(frame, face_mesh)
             # print(results)
             # Draw landmarks
-            draw_styled_landmarks_face(image, results)
+            # draw_styled_landmarks_face(image, results)
             # 2. Prediction logic
             keypoints = extract_keypoints_face(results, image)
         #         sequence.insert(0,keypoints, image)
