@@ -8,8 +8,8 @@ def normalisation_faceLandmark(faceLandMark: list, image):
     # the shape is [468, 3]
     heigth, width, dimension = image.shape
     # lRes artinya resolution
-    lRes = np.zeros([468, 3])
-    for i in range(468):
+    lRes = np.zeros([478, 3])
+    for i in range(478):
         lRes[i, 0] = faceLandMark[i][0]*heigth
         lRes[i, 1] = faceLandMark[i][1]*width
 
@@ -77,13 +77,13 @@ def normalisation_faceLandmark(faceLandMark: list, image):
     # for lres in lRes:
     #     print(lres)
 
-    # remember the shape is [468, 3], we made to 4 because for matrix multiplication
-    pointDistance = np.ones([468, 4])
+    # remember the shape is [478, 3], we made to 4 because for matrix multiplication
+    pointDistance = np.ones([478, 4])
     previousPoint = lRes  # (Before Normalisation)
     pointDistance[:, 0:3] = previousPoint
     pointNormalisation = np.matmul(m, pointDistance.transpose()).transpose()
 
-    pointResult = np.zeros(shape=(468, 3))
+    pointResult = np.zeros(shape=(478, 3))
     numberCount = 0
     # print("pointNormalisation")
     for point in pointNormalisation:
