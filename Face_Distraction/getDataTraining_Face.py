@@ -55,14 +55,14 @@ def cheatData(keypoints):
     LEFT_IRIS = [474, 475, 476, 477]   # 4 is the sum
     RIGHT_IRIS = [469, 470, 471, 472]  # 4 is the sum
 
-    l_cx, l_cy = 0
+    l_cx, l_cy = 0, 0
     for left in keypoints[LEFT_IRIS]:
         l_cx = left[0] + l_cx
         l_cy = left[1] + l_cy
     l_cx = l_cx / 4
     l_cy = l_cy / 4
 
-    r_cx, r_cy = 0
+    r_cx, r_cy = 0, 0
     for right in keypoints[RIGHT_IRIS]:
         r_cx = right[0] + r_cx
         r_cy = right[1] + r_cy
