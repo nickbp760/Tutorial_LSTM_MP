@@ -3,6 +3,7 @@ import cv2
 import mediapipe as mp
 import numpy as np
 from keyPointMP import mediapipe_detection
+from CalculateEar import calculateLeftEAR, calculateRightEAR
 # from keyPointMP import draw_styled_landmarks_face
 from Face_Distraction.getDataTraining_Face import extract_keypoints_face
 
@@ -44,6 +45,8 @@ def take_keypoints_Completeface_from_video(DATA_PATH: str, action: str, sequnce:
 
                 # NEW Export keypoints
                 keypoints = extract_keypoints_face(results, image)
+                # activate cheat dimension  = 5,3
+                # keypoints = cheatData(keypoints)
                 # print(keypoints.shape)
                 npy_path = os.path.join(DATA_PATH, action, str(sequence), str(frame_num))
                 np.save(npy_path, keypoints)
@@ -54,6 +57,27 @@ def take_keypoints_Completeface_from_video(DATA_PATH: str, action: str, sequnce:
     # Release the video file and close the window
     cap.release()
     cv2.destroyAllWindows()
+
+
+def cheatData(keypoints):
+    cheatpoints = np.zeros([5, 3])
+    rightEar = calculateRightEAR(keypoints)
+    leftEar = calculateLeftEAR(keypoints)
+    LEFT_IRIS = [474, 475, 476, 477]
+    RIGHT_IRIS = [469, 470, 471, 472]
+    (l_cx, l_cy), _ = cv2.minEnclosingCircle(keypoints[LEFT_IRIS])
+    (r_cx, r_cy), _ = cv2.minEnclosingCircle(keypoints[RIGHT_IRIS])
+
+    cheatpoints[0] = keypoints[9]
+    cheatpoints[1] = keypoints[71]
+    cheatpoints[2] = keypoints[301]
+    cheatpoints[3][0] = l_cx
+    cheatpoints[3][1] = l_cy
+    cheatpoints[3][2] = leftEar
+    cheatpoints[4][0] = r_cx
+    cheatpoints[4][1] = r_cy
+    cheatpoints[4][2] = rightEar
+    return cheatpoints
 
 
 # specify the directory path
