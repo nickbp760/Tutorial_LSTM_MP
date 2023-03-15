@@ -2,6 +2,7 @@ import numpy as np
 from copy import deepcopy
 # Import math Library
 import math
+from CalculateEar import calculateEAR
 
 
 def normalisation_faceLandmark(faceLandMark: list, image):
@@ -92,6 +93,8 @@ def normalisation_faceLandmark(faceLandMark: list, image):
         # ?? for other axis, X is same, and Z is pretty same with note the 0,0 point is behind us when we facing webcam
         # ?? Z axis become more positif if toward us, and become more negative if moving toward the webcam
         point[1] = point[1] * -1
+        for i in range(3):
+            point[i] = point[i] * 2
         pointResult[numberCount] = point[:3]
         numberCount = numberCount + 1
 
@@ -102,5 +105,6 @@ def normalisation_faceLandmark(faceLandMark: list, image):
     # After Normalisation
     # print("P9", pointNormalisation[9])
     # print("P151", pointNormalisation[151])
+    print(calculateEAR(pointResult))
 
     return pointResult
