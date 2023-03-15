@@ -54,8 +54,8 @@ def cheatData(keypoints):
     leftEar = calculateLeftEAR(keypoints)
     LEFT_IRIS = [474, 475, 476, 477]
     RIGHT_IRIS = [469, 470, 471, 472]
-    (l_cx, l_cy), _ = cv2.minEnclosingCircle(keypoints[LEFT_IRIS])
-    (r_cx, r_cy), _ = cv2.minEnclosingCircle(keypoints[RIGHT_IRIS])
+    (l_cx, l_cy), rl = cv2.minEnclosingCircle(keypoints[LEFT_IRIS])
+    (r_cx, r_cy), ry = cv2.minEnclosingCircle(keypoints[RIGHT_IRIS])
 
     cheatpoints[0] = keypoints[9]
     cheatpoints[1] = keypoints[71]
