@@ -4,6 +4,7 @@ import cv2
 import mediapipe as mp
 from keyPointMP import mediapipe_detection, draw_styled_landmarks_face
 from Normalisation import normalisation_faceLandmark
+from CalculateEar import calculateLeftEAR, calculateRightEAR
 
 
 mp_holistic = mp.solutions.holistic  # Holistic model
@@ -38,11 +39,34 @@ def extract_keypoints_face(results, image):
         face = np.array([[res.x, res.y, res.z] for res in results.multi_face_landmarks[0].landmark])
         # print(face.shape)
         face = normalisation_faceLandmark(face, image)
+        # activate cheat dimension  = 5,3
+        face = cheatData(face)
         face = face.flatten()
         # print(face.shape)
     else:
         face = np.zeros(478*3)
     return np.concatenate([face])
+
+
+def cheatData(keypoints):
+    cheatpoints = np.zeros([5, 3])
+    rightEar = calculateRightEAR(keypoints)
+    leftEar = calculateLeftEAR(keypoints)
+    LEFT_IRIS = [474, 475, 476, 477]
+    RIGHT_IRIS = [469, 470, 471, 472]
+    (l_cx, l_cy), _ = cv2.minEnclosingCircle(keypoints[LEFT_IRIS])
+    (r_cx, r_cy), _ = cv2.minEnclosingCircle(keypoints[RIGHT_IRIS])
+
+    cheatpoints[0] = keypoints[9]
+    cheatpoints[1] = keypoints[71]
+    cheatpoints[2] = keypoints[301]
+    cheatpoints[3][0] = l_cx
+    cheatpoints[3][1] = l_cy
+    cheatpoints[3][2] = leftEar
+    cheatpoints[4][0] = r_cx
+    cheatpoints[4][1] = r_cy
+    cheatpoints[4][2] = rightEar
+    return cheatpoints
 
 
 def take_keypoints_face_from_video(DATA_PATH: str, videoFilePath: str = None):
