@@ -2,7 +2,7 @@ import numpy as np
 from copy import deepcopy
 # Import math Library
 import math
-from CalculateEar import calculateEAR
+# from CalculateEar import calculateEAR
 
 
 def normalisation_faceLandmark(faceLandMark: list, image):
@@ -105,6 +105,6 @@ def normalisation_faceLandmark(faceLandMark: list, image):
     # After Normalisation
     # print("P9", pointNormalisation[9])
     # print("P151", pointNormalisation[151])
-    print(calculateEAR(pointResult))
+    # print(calculateEAR(pointResult))
 
     return pointResult
