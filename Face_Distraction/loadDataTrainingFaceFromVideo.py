@@ -3,6 +3,7 @@ import cv2
 import mediapipe as mp
 import numpy as np
 from keyPointMP import mediapipe_detection
+# from keyPointMP import draw_styled_landmarks_face
 from Face_Distraction.getDataTraining_Face import extract_keypoints_face
 
 
@@ -28,6 +29,12 @@ def take_keypoints_Completeface_from_video(DATA_PATH: str, action: str, sequnce:
             if ret:
                 # Make detections
                 image, results = mediapipe_detection(frame, holistic)
+                # # Draw landmarks
+                # draw_styled_landmarks_face(image, results)
+
+                # # Show to screen
+                # cv2.imshow('OpenCV Feed', image)
+                # cv2.waitKey(10)
 
                 # NEW Export keypoints
                 keypoints = extract_keypoints_face(results, image)
