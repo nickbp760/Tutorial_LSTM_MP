@@ -52,10 +52,22 @@ def cheatData(keypoints):
     cheatpoints = np.zeros([5, 3])
     rightEar = calculateRightEAR(keypoints)
     leftEar = calculateLeftEAR(keypoints)
-    LEFT_IRIS = [474, 475, 476, 477]
-    RIGHT_IRIS = [469, 470, 471, 472]
-    (l_cx, l_cy), rl = cv2.minEnclosingCircle(keypoints[LEFT_IRIS])
-    (r_cx, r_cy), ry = cv2.minEnclosingCircle(keypoints[RIGHT_IRIS])
+    LEFT_IRIS = [474, 475, 476, 477]   # 4 is the sum
+    RIGHT_IRIS = [469, 470, 471, 472]  # 4 is the sum
+
+    l_cx, l_cy = 0
+    for left in keypoints[LEFT_IRIS]:
+        l_cx = left[0] + l_cx
+        l_cy = left[1] + l_cy
+    l_cx = l_cx / 4
+    l_cy = l_cy / 4
+
+    r_cx, r_cy = 0
+    for right in keypoints[RIGHT_IRIS]:
+        r_cx = right[0] + r_cx
+        r_cy = right[1] + r_cy
+    r_cx = r_cx / 4
+    r_cy = r_cy / 4
 
     cheatpoints[0] = keypoints[9]
     cheatpoints[1] = keypoints[71]
