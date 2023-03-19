@@ -93,7 +93,7 @@ def normalisation_faceLandmark(faceLandMark: list, image):
         # ?? Z axis become more positif if toward us, and become more negative if moving toward the webcam
         point[1] = point[1] * -1
         for i in range(3):
-            point[i] = point[i] * 2
+            point[i] = point[i] * 10
         pointResult[numberCount] = point[:3]
         numberCount = numberCount + 1
 
