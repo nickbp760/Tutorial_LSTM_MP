@@ -42,9 +42,9 @@ def extract_keypoints_face(results, image):
         # activate cheat dimension  = 5,3
         face = cheatData(face)
         face = face.flatten()
-        # print(face.shape)
     else:
-        face = np.zeros(478*3)
+        # activate cheat dimension  = 5,3
+        face = np.zeros(5*3)
     return np.concatenate([face])
 
 
