@@ -26,14 +26,14 @@ def prob_viz(res, actions, input_frame, colors):
 
 def model_reload():
     model = Sequential()
-    model.add(GRU(128, return_sequences=True, activation='relu', input_shape=(50, 1434)))
+    model.add(GRU(128, return_sequences=True, activation='relu', input_shape=(50, 15)))
     model.add(GRU(64, return_sequences=True, activation='relu'))
     model.add(GRU(128, return_sequences=False, activation='relu'))
-    model.add(Dense(128, activation='relu'))
+    model.add(Dense(64, activation='relu'))
     model.add(Dense(32, activation='relu'))
     model.add(Dense(actions.shape[0], activation='softmax'))
 
-    model.load_weights('Weight_model/actionGRUFaceNikoComplete.h5')
+    model.load_weights('Weight_model/actionGRUCheatData.h5')
     return model
 
 
