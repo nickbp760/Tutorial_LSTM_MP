@@ -26,10 +26,11 @@ def draw_landmarks(image, results):
 
 
 def draw_styled_landmarks_face(image, results):
-    # Draw face connections
-    mp_drawing.draw_landmarks(image, results.face_landmarks, mp_holistic.FACEMESH_TESSELATION,
-                              mp_drawing.DrawingSpec(color=(80, 110, 10), thickness=1, circle_radius=1),
-                              mp_drawing.DrawingSpec(color=(80, 256, 121), thickness=1, circle_radius=1))
+    for face_landmarks in results.multi_face_landmarks:
+        # Draw face connections
+        mp_drawing.draw_landmarks(image, face_landmarks, mp_holistic.FACEMESH_TESSELATION,
+                                  mp_drawing.DrawingSpec(color=(80, 110, 10), thickness=1, circle_radius=1),
+                                  mp_drawing.DrawingSpec(color=(80, 256, 121), thickness=1, circle_radius=1))
 
 
 def draw_styled_landmarks_all(image, results):

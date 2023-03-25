@@ -9,6 +9,7 @@ from CalculateEar import calculateLeftEAR, calculateRightEAR
 
 mp_holistic = mp.solutions.holistic  # Holistic model
 mp_drawing = mp.solutions.drawing_utils  # Drawing utilities
+mp_face_mesh = mp.solutions.face_mesh
 # Path for exported data, numpy arrays
 DATA_PATH = os.path.join('Face_Data')
 
@@ -97,7 +98,12 @@ def take_keypoints_face_from_video(DATA_PATH: str, videoFilePath: str = None):
         exit()
 
     # Set mediapipe model
-    with mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence=0.5) as holistic:
+    with mp_face_mesh.FaceMesh(
+            max_num_faces=1,
+            refine_landmarks=True,
+            min_detection_confidence=0.5,
+            min_tracking_confidence=0.5
+    ) as face_mesh:
 
         # NEW LOOP
         # Loop through actions
@@ -111,7 +117,7 @@ def take_keypoints_face_from_video(DATA_PATH: str, videoFilePath: str = None):
                     ret, frame = cap.read()
 
                     # Make detections
-                    image, results = mediapipe_detection(frame, holistic)
+                    image, results = mediapipe_detection(frame, face_mesh)
 
                     # Draw landmarks
                     draw_styled_landmarks_face(image, results)
@@ -149,9 +155,14 @@ def take_keypoints_face_from_video(DATA_PATH: str, videoFilePath: str = None):
 def load_image_face_detection():
     image = cv2.imread("20230224-100951_SavedPicture.png")
     # Set mediapipe model
-    with mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence=0.5) as holistic:
+    with mp_face_mesh.FaceMesh(
+            max_num_faces=1,
+            refine_landmarks=True,
+            min_detection_confidence=0.5,
+            min_tracking_confidence=0.5
+    ) as face_mesh:
         # Make detections
-        image, results = mediapipe_detection(image, holistic)
+        image, results = mediapipe_detection(image, face_mesh)
         # print(results)
 
         # Draw landmarks
@@ -172,4 +183,4 @@ def load_image_face_detection():
         cv2.destroyAllWindows()
 
 
-# load_image_face_detection()
+load_image_face_detection()
