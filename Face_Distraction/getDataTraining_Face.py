@@ -41,11 +41,11 @@ def extract_keypoints_face(results, image):
         # print(face.shape)
         face = normalisation_faceLandmark(face, image)
         # activate cheat dimension  = 5,3
-        # face = cheatData(face)
+        face = cheatData(face)
         face = face.flatten()
     else:
         # activate cheat dimension  = 5,3
-        face = np.zeros(478*3)
+        face = np.zeros(5*3)
     return np.concatenate([face])
 
 
