@@ -39,13 +39,13 @@ def extract_keypoints_face(results, image):
     if results.multi_face_landmarks:
         face = np.array([[res.x, res.y, res.z] for res in results.multi_face_landmarks[0].landmark])
         # print(face.shape)
-        # face = normalisation_faceLandmark(face, image)
-        # # activate cheat dimension  = 5,3
-        # face = cheatData(face)
+        face = normalisation_faceLandmark(face, image)
+        # activate cheat dimension  = 5,3
+        face = cheatData(face)
         face = face.flatten()
     else:
         # activate cheat dimension  = 5,3
-        face = np.zeros(478*3)
+        face = np.zeros(5*3)
     return np.concatenate([face])
 
 
