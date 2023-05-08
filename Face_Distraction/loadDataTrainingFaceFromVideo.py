@@ -58,7 +58,7 @@ def take_keypoints_Completeface_from_video(DATA_PATH: str, action: str, sequnce:
 
 # specify the directory path
 path = "./FaceVideoDataset/FaceTrainVideoDataset"
-DATA_PATH = os.path.join('./Real_CheatData/Real_CheatDataTrain')
+DATA_PATH = os.path.join('./Real_DataNorm/Real_DataTrainNorm')
 # use os.listdir() to get a list of all files and folders in the directory
 filesAndFolders = os.listdir(path)
 
