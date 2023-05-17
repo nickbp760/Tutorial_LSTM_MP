@@ -1,5 +1,6 @@
 import numpy as np
 import cv2
+import time
 import mediapipe as mp
 from keyPointMP import mediapipe_detection
 # from keyPointMP import draw_styled_landmarks_face
@@ -46,7 +47,17 @@ def real_time_camera_predict():
     sentence = ""
     threshold = 0.8
 
+    # We need to set resolutions.
+    # so, convert them from float to integer.
     cap = cv2.VideoCapture(0)
+    
+    frame_width = int(cap.get(3))
+    frame_height = int(cap.get(4))
+
+    size = (frame_width, frame_height)
+    timestr = time.strftime("%Y%m%d-%H%M%S")
+    result = cv2.VideoWriter(timestr+"_"+"DemoVideo.avi", cv2.VideoWriter_fourcc(*'MJPG'), 10, size)
+
     # Set mediapipe model
     model = model_reload()
     with mp_face_mesh.FaceMesh(
@@ -89,7 +100,7 @@ def real_time_camera_predict():
             cv2.rectangle(image, (0, 0), (640, 40), (245, 117, 16), -1)
             cv2.putText(image, sentence, (3, 30),
                         cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2, cv2.LINE_AA)
-
+            result.write(image)
             # Show to screen
             cv2.imshow('OpenCV Feed', image)
 
