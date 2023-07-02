@@ -71,7 +71,7 @@ def cheatData(keypoints):
         r_cx = r_cx / 4
         r_cy = r_cy / 4
 
-        cheatpoints[0] = keypoints[9]
+        cheatpoints[0] = keypoints[8]
         cheatpoints[1] = keypoints[71]
         cheatpoints[2] = keypoints[301]
         cheatpoints[3][0] = l_cx
