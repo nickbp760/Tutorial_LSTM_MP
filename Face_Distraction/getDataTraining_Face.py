@@ -3,7 +3,7 @@ import os
 import cv2
 import mediapipe as mp
 from keyPointMP import mediapipe_detection, draw_styled_landmarks_face
-from Normalisation import normalisation_faceLandmark
+# from Normalisation import normalisation_faceLandmark
 from CalculateEar import calculateLeftEAR, calculateRightEAR
 
 
@@ -39,7 +39,7 @@ def extract_keypoints_face(results, image):
     if results.multi_face_landmarks:
         face = np.array([[res.x, res.y, res.z] for res in results.multi_face_landmarks[0].landmark])
         # print(face.shape)
-        face = normalisation_faceLandmark(face, image)
+        # face = normalisation_faceLandmark(face, image)
         # activate cheat dimension  = 5,3
         face = cheatData(face)
         face = face.flatten()
